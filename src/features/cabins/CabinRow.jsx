@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCobins";
 
 const TableRow = styled.div`
   display: grid;
@@ -41,7 +43,28 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const { name, maxCapacity, regularPrice, discount, image } = cabin;
+  const {
+    id: cabinID,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+  } = cabin;
+
+  const queryClient = useQueryClient();
+
+  const { isLoading: isDeleting, mutate } = useMutation({
+    // mutationFn: (id) => deleteCabin(id),
+    mutationFn: deleteCabin, //the exact same thing
+    onSuccess: () => {
+      alert("Succefully Deleted");
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+    },
+    onError: (err) => alert(err.message),
+  });
   return (
     <TableRow role="row">
       <Img src={image} alt={name} />
@@ -49,9 +72,9 @@ function CabinRow({ cabin }) {
       <div>{maxCapacity}</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
-      {/* <Price>{regularPrice}</Price> */}
-      {/* <Discount>{discount}</Discount> */}
-      <button>Delete</button>
+      <button onClick={() => mutate(cabinID)} disabled={isDeleting}>
+        Delete
+      </button>
     </TableRow>
   );
 }
