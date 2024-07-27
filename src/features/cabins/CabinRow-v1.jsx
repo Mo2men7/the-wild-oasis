@@ -51,7 +51,7 @@ function CabinRow({ cabin }) {
   const { isCreating, createCabin } = useCreateCabin();
 
   const {
-    id: cabinID,
+    id: cabinId,
     name,
     maxCapacity,
     regularPrice,
@@ -103,7 +103,7 @@ function CabinRow({ cabin }) {
           <Modal.Window name="delete">
             <ConfirmDelete
               resourceName="cabins"
-              onConfirm={() => deleteCabin(cabinID)}
+              onConfirm={() => deleteCabin(cabinId)}
               disabled={isDeleting || isCreating}
             />
           </Modal.Window>
