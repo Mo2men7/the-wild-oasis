@@ -54,6 +54,7 @@ const Button = styled.button`
   box-shadow: var(--shadow-sm);
   ${(props) => sizes[props.size]}
   ${(props) => variations[props.variation]}
+  ${(props) => (props.width ? `width:${props.width}` : ``)}
 `;
 
 Button.defaultProps = {
