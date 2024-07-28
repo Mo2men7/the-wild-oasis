@@ -18,13 +18,18 @@ export function useBookings() {
   const [field, direction] = sortByRow.split("-");
   const sortBy = { field, direction };
 
+  // Paginate
+  const currentPage = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
-    queryKey: ["bookings", filter, sortBy], // we pass also the filter object so that the output will depend on it like useEffect
-    queryFn: () => getBookings({ filter, sortBy }),
+    queryKey: ["bookings", filter, sortBy, currentPage], // we pass also the filter object so that the output will depend on it like useEffect
+    queryFn: () => getBookings({ filter, sortBy, currentPage }),
   });
-  return { isLoading, bookings, error };
+  return { isLoading, bookings, count, error };
 }
