@@ -15,7 +15,7 @@ export function useLogin() {
       }),
     onSuccess: (user) => {
       // take the new user from the cache instead of fetching them every refresh
-      queryClient.setQueryData(["user"], user);
+      queryClient.setQueryData(["user"], user.user);
       navigate("/dashboard", { replace: true });
     },
     onError: () => {
