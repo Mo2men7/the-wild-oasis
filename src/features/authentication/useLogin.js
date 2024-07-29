@@ -16,7 +16,7 @@ export function useLogin() {
     onSuccess: (user) => {
       // take the new user from the cache instead of fetching them every refresh
       queryClient.setQueryData(["user"], user);
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     },
     onError: () => {
       toast.error("Provided email or password are incorrect");
